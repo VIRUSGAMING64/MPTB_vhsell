@@ -1,0 +1,10 @@
+rm -r */__pycache__
+rm -r */.cph
+rm -r */*/__pycache__
+rm -r */*/.cph
+rm -r */*/*/__pycache__
+rm -r */*/*/.cph
+rm -r */*/*/*/__pycache__
+rm -r */*/*/*/.cph
+rm -r saved
+rm -r logs.txt
