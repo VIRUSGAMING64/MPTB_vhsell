@@ -110,4 +110,10 @@ class MessageQueue():
             return self.url.pop(0)
 
         else:
-            return None
+            return 
+        
+
+actions             =  MessageQueue()  #Queues with  messages
+runner              = Pool()
+
+runner.run()

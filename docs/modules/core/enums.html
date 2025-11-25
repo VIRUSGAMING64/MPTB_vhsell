@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>core/enums.py — MPTB_vhsell</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header>
+    <h1>core/enums.py</h1>
+    <nav><a href="../../index.html">Inicio</a> · <a href="../../modules.html">Módulos</a></nav>
+</header>
+<main>
+    <section class="card">
+        <h2>Resumen</h2>
+        <p>Define constantes de bitmask para clasificar chats, tipos de media y acciones. Usadas en varias partes del proyecto (p. ej. <code>GetMedia</code> en <code>modules/utils.py</code> y la cola de mensajes).</p>
+    </section>
+
+    <section class="card">
+        <h3>Constantes</h3>
+        <p>Algunas constantes relevantes:</p>
+        <ul>
+            <li><code>BANNED, GROUP, CHANNEL, MESSAGE, ADMIN, INVALID, MEDIA, ALERT</code> — flags para chats.</li>
+            <li><code>DOCUMENT, VIDEO, AUDIO, PHOTO, VOICE, URL, OTHER, ALL, ALLOWED</code> — flags para tipos de media.</li>
+            <li><code>DOWNLOAD, UPLOAD, DELETE</code> — acciones.</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>Uso</h2>
+        <p>Estas banderas se pueden combinar usando operaciones bit a bit (OR) y comprobar con AND para determinar presencia de tipos o permisos. Ejemplo conceptual:</p>
+        <pre>if media_type & VIDEO:
+    # es video</pre>
+    </section>
+
+    <footer>
+        <p>Archivo: <code>modules/core/enums.py</code></p>
+    </footer>
+</main>
+</body>
+</html>

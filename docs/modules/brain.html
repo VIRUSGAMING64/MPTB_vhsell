@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>brain.py — MPTB_vhsell</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header>
+    <h1>brain.py</h1>
+    <nav><a href="../index.html">Inicio</a> · <a href="modules.html">Módulos</a></nav>
+</header>
+<main>
+    <section class="card">
+        <h2>Resumen</h2>
+        <p><strong>brain.py</strong> es el orquestador principal que toma mensajes desde las colas y los delega a funciones de procesamiento (comandos, descarga/subida de medios o envío a la IA). Corre un <em>mainloop</em> en un hilo separado que consume la instancia global <code>actions</code> (definida en <code>modules/gvar.py</code>).</p>
+    </section>
+
+    <section class="card">
+        <h2>Estructura y funciones principales</h2>
+        <h3><code>only_message(message)</code></h3>
+        <p>Procesa mensajes de tipo texto. Lógica:</p>
+        <ul>
+            <li>Si <code>message</code> es <code>None</code>, retorna.</li>
+            <li>Itera por <code>COMMANDS</code> y si el texto comienza por un comando, invoca la función correspondiente desde el diccionario <code>commands</code> (definido en <code>gvar.py</code>).</li>
+            <li>Si no es comando, envía el texto a la función <code>gpt(message)</code> (módulo de IA).</li>
+        </ul>
+
+        <h3><code>only_up_media / only_dl_media / only_url</code></h3>
+        <p>Placeholders para manejar subida de medios, descarga o URLs respectivamente. Actualmente no contienen implementación.</p>
+
+        <h3><code>mainloop()</code></h3>
+        <p>Loop infinito que hace:</p>
+        <ol>
+            <li>Itera por las colas en el orden <code>[0,1,2,3]</code>.</li>
+            <li>Extrae un mensaje con <code>actions.pop(que)</code>.</li>
+            <li>Dependiendo del índice, encola la tarea al <code>runner</code> (pool de hilos) usando <code>runner.add(func, [mess])</code>:</li>
+            <ul>
+                <li><code>0</code> → <code>only_message</code></li>
+                <li><code>1</code> → <code>only_dl_media</code></li>
+                <li><code>2</code> → <code>only_up_media</code></li>
+                <li><code>3</code> → <code>only_url</code></li>
+            </ul>
+        </ol>
+
+        <p>Se lanza el hilo con <code>th.Thread(target=mainloop).start()</code> al final del archivo.</p>
+    </section>
+
+    <section class="card">
+        <h2>Flujo en contexto</h2>
+        <p>Resumen del flujo completo relacionado con <code>brain.py</code>:</p>
+        <ol>
+            <li>Un update llega (vía <code>on_message</code> en <code>modules/core/MessagesHandlers.py</code>).</li>
+            <li>Si es mensaje directo, se hace <code>actions.push(message)</code>.</li>
+            <li><code>brain.mainloop()</code> saca el mensaje y delega la tarea al <code>runner</code>.</li>
+            <li><code>only_message</code> decide si ejecutar un comando o invocar el modelo de IA.</li>
+        </ol>
+    </section>
+
+    <section class="card">
+        <h2>Observaciones y mejoras sugeridas</h2>
+        <ul>
+            <li>Implementar las funciones de manejo de medios (<code>only_up_media</code>, <code>only_dl_media</code>) y <code>only_url</code>.</li>
+            <li>Añadir logging estructurado (nivel DEBUG/INFO/ERROR).</li>
+            <li>Control de errores más robusto alrededor de llamadas a <code>commands[com]</code> y <code>gpt()</code>.</li>
+            <li>Considerar señales de parada (graceful shutdown) para terminar hilos limpiamente.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>Archivo: <code>modules/brain.py</code></p>
+    </footer>
+</main>
+</body>
+</html>

@@ -1,3 +1,4 @@
+from modules.core.commands import *
 from modules.gvar import *
 from modules.chatgpt import *
 from telegram import *
@@ -11,6 +12,7 @@ def only_message(message):
         if message.text.startswith(com):
             commands[com](message)
             flag = True
+            return
     if not flag:
         gpt(message)
         

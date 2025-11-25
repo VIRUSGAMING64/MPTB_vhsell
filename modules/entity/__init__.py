@@ -1,1 +1,1 @@
-from modules.entity import *
+from modules.entity.t_entity import *

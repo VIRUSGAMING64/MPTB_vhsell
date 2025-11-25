@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación MPTB_vhsell</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>MPTB_vhsell</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="modules.html">Módulos</a></li>
+                <li><a href="setup.html">Instalación</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Visión General</h2>
+            <p><strong>MPTB_vhsell</strong> es un bot de Telegram modular construido en Python. Utiliza la librería <code>python-telegram-bot</code> para la interacción con la API de Telegram y cuenta con una arquitectura basada en colas y hilos para manejar tareas de manera asíncrona y eficiente.</p>
+            <p>El proyecto integra capacidades de IA (a través de una interfaz compatible con OpenAI) y un sistema de gestión de archivos y comandos.</p>
+        </section>
+
+        <section class="card">
+            <h2>Flujo de Trabajo del Proyecto</h2>
+            <p>El flujo de procesamiento de un mensaje es el siguiente:</p>
+            
+            <div class="flow-step">
+                <h3>1. Recepción del Mensaje</h3>
+                <p>El archivo <code>bot.py</code> inicia el <em>polling</em>. Cuando llega un mensaje, es capturado por el manejador <code>on_message</code> en <code>modules/core/MessagesHandlers.py</code>.</p>
+            </div>
+
+            <div class="flow-step">
+                <h3>2. Clasificación y Encolado</h3>
+                <p>El mensaje se clasifica (Privado, Grupo, Canal). Si es un mensaje directo, se añade a la cola global <code>actions</code> (definida en <code>modules/gvar.py</code>).</p>
+            </div>
+
+            <div class="flow-step">
+                <h3>3. Procesamiento en Segundo Plano (Brain)</h3>
+                <p>El módulo <code>modules/brain.py</code> ejecuta un bucle infinito (<code>mainloop</code>) en un hilo separado. Este bucle monitorea la cola <code>actions</code>.</p>
+            </div>
+
+            <div class="flow-step">
+                <h3>4. Ejecución (Runner)</h3>
+                <p>Cuando <code>brain.py</code> detecta un mensaje, lo extrae y delega la tarea al <code>runner</code> (un Pool de hilos). Dependiendo del tipo de tarea, se llama a funciones como <code>only_message</code>.</p>
+            </div>
+
+            <div class="flow-step">
+                <h3>5. Acción (Comando o IA)</h3>
+                <p>La función <code>only_message</code> verifica si el texto es un comando (ej. <code>/start</code>).
+                <ul>
+                    <li><strong>Si es comando:</strong> Se ejecuta la función correspondiente desde <code>modules/core/commands.py</code>.</li>
+                    <li><strong>Si es texto normal:</strong> Se envía a <code>modules/chatgpt.py</code> para generar una respuesta con IA.</li>
+                </ul>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Documentación generada para MPTB_vhsell</p>
+    </footer>
+</body>
+</html>

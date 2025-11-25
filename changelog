@@ -1,3 +1,9 @@
+2.1.0.0
+Added tests
+Added documentation (made by gemini 3)
+minors errors fixed in some files
+Created database in csv format
+Solved dependency problem of modules
 2.0.0.0
 Gpt5-nano-module created
 Created await_exec for exectute await functions

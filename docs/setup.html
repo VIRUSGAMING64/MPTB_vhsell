@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación - Documentación MPTB_vhsell</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>MPTB_vhsell</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="modules.html">Módulos</a></li>
+                <li><a href="setup.html">Instalación</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Requisitos Previos</h2>
+            <p>Para ejecutar este bot, necesitas tener instalado Python 3.8+ y las dependencias listadas en el proyecto.</p>
+        </section>
+
+        <section class="card">
+            <h2>Configuración</h2>
+            <p>El bot utiliza variables de entorno para su configuración. Debes configurar las siguientes variables (puedes usar un archivo <code>.env</code> o exportarlas en tu terminal):</p>
+            <pre>
+TOKEN=tu_token_de_telegram
+API_HASH=tu_api_hash_de_telegram
+API_ID=tu_api_id_de_telegram
+OPEN_AI=tu_api_key_de_openai
+            </pre>
+        </section>
+
+        <section class="card">
+            <h2>Ejecución</h2>
+            <p>Para iniciar el bot, ejecuta el archivo principal desde la raíz del proyecto:</p>
+            <pre>python bot.py</pre>
+            <p>El bot iniciará el polling y comenzará a escuchar mensajes. Verás un mensaje en la consola indicando que el bot está corriendo.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Documentación generada para MPTB_vhsell</p>
+    </footer>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from telegram import *
 from modules.gvar import *
+from modules.utils import *
 
 def gpt(message:Message):
     if message == None:

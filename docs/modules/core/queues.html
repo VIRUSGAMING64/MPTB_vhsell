@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>core/queues.py — MPTB_vhsell</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header>
+    <h1>core/queues.py</h1>
+    <nav><a href="../../index.html">Inicio</a> · <a href="../../modules.html">Módulos</a></nav>
+</header>
+<main>
+    <section class="card">
+        <h2>Resumen</h2>
+        <p>Contiene dos componentes clave para la concurrencia: la clase <code>Pool</code> (pool de hilos simple) y <code>MessageQueue</code> (cola de mensajes clasificados por tipo).</p>
+    </section>
+
+    <section class="card">
+        <h3>Pool</h3>
+        <p>Características:</p>
+        <ul>
+            <li>Inicializa con un número de <code>threads</code> por defecto (4).</li>
+            <li>Gestiona una <code>queue</code> de tareas. Cada tarea es una pareja <code>[func, args]</code>.</li>
+            <li>El método <code>run</code> lanza un hilo daemon que ejecuta <code>_run</code> y despacha hilos workers para ejecutar las tareas con <code>execute</code>.</li>
+        </ul>
+        <p>Notas:</p>
+        <ul>
+            <li>El diseño es sencillo pero funcional; considerar usar estructuras thread-safe (colas de la librería <code>queue.Queue</code>) y locks compartidos para evitar condiciones de carrera.</li>
+            <li>El método <code>execute</code> aumenta <code>running</code>, llama a la función y luego la decrementa; la excepción se envuelve en un string (se puede mejorar con logging y re-raise adecuada).</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h3>MessageQueue</h3>
+        <p>Provee 4 listas para almacenar mensajes:</p>
+        <ul>
+            <li><code>messages</code>: textos normales.</li>
+            <li><code>download_media</code>: mensajes con medios para descargar.</li>
+            <li><code>upload_media</code>: mensajes marcados para subida (via comando <code>/upload</code>).</li>
+            <li><code>url</code>: mensajes que contienen URLs.</li>
+        </ul>
+        <p>Métodos importantes:</p>
+        <ul>
+            <li><code>push(message)</code>: determina tipo de mensaje usando <code>GetMedia</code>, <code>message.text</code> y prefijos <code>http://</code> / <code>https://</code> o <code>/upload</code>, y añade a la lista adecuada.</li>
+            <li><code>pop(queue_index)</code>: devuelve y remueve el primer mensaje de la lista correspondiente (o <code>None</code> si está vacía).</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>Sugerencias</h2>
+        <ul>
+            <li>Usar <code>queue.Queue</code> o colecciones thread-safe para garantizar seguridad entre hilos.</li>
+            <li>Considerar límites de tamaño en las colas y políticas de desborde (FIFO, drop-oldest, persistir en DB).</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>Archivo: <code>modules/core/queues.py</code></p>
+    </footer>
+</main>
+</body>
+</html>

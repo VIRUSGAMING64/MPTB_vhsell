@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>core/MessagesHandlers.py — MPTB_vhsell</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header>
+    <h1>core/MessagesHandlers.py</h1>
+    <nav><a href="../../index.html">Inicio</a> · <a href="../../modules.html">Módulos</a></nav>
+</header>
+<main>
+    <section class="card">
+        <h2>Resumen</h2>
+        <p>Contiene la función <code>on_message(update, context)</code> que es el primer punto de entrada de los updates de Telegram. Clasifica el mensaje por tipo de chat y delega en funciones específicas.</p>
+    </section>
+
+    <section class="card">
+        <h3><code>on_message(update, context)</code></h3>
+        <p>Extrae <code>message = update.message</code> y comprueba <code>message.chat.type</code>:</p>
+        <ul>
+            <li><code>Chat.PRIVATE</code> → <code>direct_message(update.message)</code> (añade a la cola de acciones).</li>
+            <li><code>Chat.GROUP | Chat.SUPERGROUP</code> → <code>group_message(message)</code> (placeholder).</li>
+            <li><code>Chat.CHANNEL</code> → <code>channel_message(message)</code> (placeholder).</li>
+            <li>Otro tipo → <code>unknow_message(message)</code> (placeholder).</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h3>Funciones auxiliares</h3>
+        <p><code>direct_message</code> empuja el mensaje a <code>actions.push(message)</code>. Las demás funciones están sin implementar.</p>
+    </section>
+
+    <section class="card">
+        <h2>Notas</h2>
+        <ul>
+            <li>La función <code>on_message</code> es <code>async</code>, pero las funciones auxiliares son sincrónicas; hay mezcla de paradigmas que debe armonizarse (usar siempre coroutines o siempre sync con adaptadores).</li>
+            <li>Falta manejo de excepciones y validación de estructura del mensaje.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>Archivo: <code>modules/core/MessagesHandlers.py</code></p>
+    </footer>
+</main>
+</body>
+</html>

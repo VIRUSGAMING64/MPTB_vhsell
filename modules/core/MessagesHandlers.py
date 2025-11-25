@@ -1,5 +1,6 @@
 from telegram import *
 from telegram.ext import *
+from modules.core.queues import *
 from modules.gvar import *
 
 async def on_message(update:Update,context):

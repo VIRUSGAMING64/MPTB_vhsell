@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>database.py — MPTB_vhsell</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header>
+    <h1>database.py</h1>
+    <nav><a href="../index.html">Inicio</a> · <a href="modules.html">Módulos</a></nav>
+</header>
+<main>
+    <section class="card">
+        <h2>Resumen</h2>
+        <p>Actualmente <code>modules/database.py</code> solo importa <code>sqlite3</code>. El módulo está marcado como punto de partida para la persistencia (SQLite), pero no contiene funciones implementadas aún.</p>
+    </section>
+
+    <section class="card">
+        <h2>Sugerencias de diseño</h2>
+        <ul>
+            <li>Crear una clase <code>Database</code> que encapsule operaciones básicas (conectar, ejecutar consultas, cierre seguro).</li>
+            <li>Usar migraciones simples (scripts SQL) o almacenar esquema en un archivo <code>schema.sql</code>.</li>
+            <li>Persistir información relevante: usuarios, metadatos de archivos subidos/descargados, logs de conversaciones si se requiere historial.</li>
+            <li>Implementar bloqueo/serialización de acceso si la base será usada desde múltiples hilos.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>Archivo: <code>modules/database.py</code></p>
+    </footer>
+</main>
+</body>
+</html>
