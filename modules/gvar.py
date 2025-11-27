@@ -14,11 +14,11 @@ FUSE_GROUP_ID       =  None #Ignored if fuse off
 ADMINS_ID           = []
 DEBUG_ID            = []
 PROXY          = "http://127.0.0.1:8118" 
+DB_SAVE_TIMEOUT    = 60 #in seconds
 
 model = None
 if OPEN_AI_API_KEY != None:
     model = openai.OpenAI(api_key=OPEN_AI_API_KEY,http_client=httpx.Client(proxy=PROXY))
-
 
 bot = None
 sender = None

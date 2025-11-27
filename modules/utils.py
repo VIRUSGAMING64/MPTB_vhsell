@@ -52,6 +52,7 @@ def t_user2peer(us:User):
     pw.is_premium = us.is_premium
     pw.name = us.username
     pw.path = f"env/{pw.name}-{pw.id}"
+    return pw
 
 
 def await_exec(func,args):
@@ -84,3 +85,16 @@ def int2path(idx,user):
         return None
     
     return dirs[idx]
+
+def newuser(id):
+    user2 = peer()
+    user2.bot_premium = 0
+    user2.id = id
+    user2.name = "..."
+    user2.path = f"env/tmp-{id}"
+    user2.is_premium = 0
+    try:
+        os.mkdir(user2.path)
+    except:
+        pass 
+    return user2

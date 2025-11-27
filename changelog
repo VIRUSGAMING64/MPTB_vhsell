@@ -1,3 +1,13 @@
+2.4.0.0
+Added database auto-saver
+Fixed ls command (path check and output format)
+Fixed rm command (database reference)
+Implemented mkdir command
+Implemented su_state command
+Implemented banuser command
+Added newuser helper function in utils
+Fixed t_user2peer return
+Updated .gitignore
 2.3.0.0
 Banned users can't use this bot
 Only admins use gpt-5-nano bot

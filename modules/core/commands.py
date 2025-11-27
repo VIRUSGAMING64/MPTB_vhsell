@@ -1,3 +1,5 @@
+from platform import python_branch
+from posixpath import dirname
 from modules.core.queues import *
 from modules.gvar import *
 import os
@@ -29,27 +31,27 @@ def help_bot(message:Message):
 def ls(message:Message):
     args = message.text.removeprefix("/ls")
     user = message.from_user
-    user:peer = database.get(user.id)
+    user:peer = base.get(user.id)
     t_dirs = os.listdir(user.path)
     files = []
     dirs = []
     for pth in t_dirs:
-        if os.path.isdir(pth):
+        if os.path.isdir(user.path+"/"+pth):
             dirs.append(pth)
         else:
             files.append(pth)
-    s:str = " " * 5 + f"[content in {user.path}]" + " " * 5
+    s:str = " " * 5 + f"[content in {user.path}]" + " " * 5 + "\n"
     for pth in dirs:
-        s += F"{emojis.FILE_FOLDER} - {pth}"
+        s += F"{emojis.FILE_FOLDER} - {pth}\n"
     for pth in files:
-        s += F"{emojis.LINKED_PAPERCLIPS} - {pth}"
+        s += F"{emojis.LINKED_PAPERCLIPS} - {pth}\n"
 
     await_exec(message.reply_text, [s]) 
 
 def rm(message:Message):
     args = message.text
     args:str = args.removeprefix("/rm ")
-    user = database.get(message.from_user.id)
+    user = base.get(message.from_user.id)
     if args.isnumeric():
         args = int2path(int(args),user)
         if args == None:
@@ -69,35 +71,77 @@ def rm(message:Message):
     a = ["path","folder","file"]
     await_exec(message.reply_text, [f"{a[p]} removed"])
 
+
 def mkdir(message:Message):
-    args = message.text
-    user = database.get(message.from_user.id)
-
-
+    dirname = message.text.removeprefix("/mkdir").split()
+    user = base.get(message.from_user.id)
+    if len(dirname) == 0:
+        await_exec(message.reply_text, ["send a valid directory name"])
+        return 
+    dirname = dirname[0]
+    newdir = user.path + "/" + dirname
+    try:
+        os.mkdir(newdir)
+    except Exception as e:
+        await_exec(message.reply_text, [f"error making dir {str(e)}"])
+    await_exec(message.reply_text, [f"directory {dirname} created"])            
+    
 
 def upload(message:Message):
     args = message.text
     file = getfullpath(args)
 
+
 def ren(message:Message):
     args = message.text
 
+
 def size(message:Message):
     args = message.text
+    
+
 
 def comp(message:Message):
     args = message.text
 
+
+
 def su_state(message:Message):
-    user = database.get(message.from_user.id)
+    user = base.get(message.from_user.id)
     if not user.id in ADMINS_ID:
         await_exec(message.reply_text,["access denied [not admin]"])
+    mess =  message.text
+    mess = mess.removeprefix("/su_state ").split()
+    ok = len(mess) >= 2
+    for i in range(mess): 
+        if not mess[i].isnumeric(): 
+            ok = False
+        else:
+            mess[i] = int(mess[i])
+    if not ok:
+        await_exec(message.reply_text,["send a valid user ID and valid STATE"])
+        return
     
+    user2 = base.get(mess[0])
+    if user2 == None:
+        user2 = newuser(mess[0])
+    user2.state |= mess[1]
+    await_exec(message.reply_text,["State of user [ok]"])
 
 def banuser(message:Message):
-    user = database.get(message.from_user.id)
+    user = base.get(message.from_user.id)
     if not user.id in ADMINS_ID:
         await_exec(message.reply_text,["access denied [not admin]"])
+    mess =  message.text
+    mess = mess.removeprefix("/banuser ")
+    if not mess.isnumeric():
+        await_exec(message.reply_text,["send a valid user ID"])
+    id = int(mess)
+    user2 = base.get(id)
+    if user2 == None:
+        user2 = newuser(id)
+    user2.state |= BANNED
+    await_exec(message.reply_text,[f"User [{id}] is banned"])
 
 
 commands            = {

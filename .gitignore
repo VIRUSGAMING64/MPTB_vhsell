@@ -1,2 +1,6 @@
 .env
 .config
+.vscode
+env
+**/__pycache__
+database.csv

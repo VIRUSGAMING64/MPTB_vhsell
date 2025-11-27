@@ -32,15 +32,28 @@ def only_url(message):
     if message == None:
         return
 
+def database_saver():
+    while True:
+        time.sleep(DB_SAVE_TIMEOUT)
+        base.save()
 
 def mainloop():
     while True:
         for que in [0,1,2,3]:
             mess:Message = actions.pop(que)
-            user:peer = base.get(mess.id)
+            if mess == None:
+                continue
+            user:peer = base.get(mess.from_user.id)
             if user == None:
+                user = t_user2peer(mess.from_user)
+                base.add(user)
                 user.path = f"env/{user.name}-{user.id}"
-                base.add(t_user2peer(mess.from_user))
+                try:
+                    os.mkdir(user.path)
+                except:
+                    pass
+            if user.name == "?":
+                user.name = mess.from_user.username
             if user.state & BANNED:
                 continue
             if que == 0:
@@ -54,4 +67,5 @@ def mainloop():
         
         time.sleep(TIMEOUT)
 
+th.Thread(target=database_saver).start()
 th.Thread(target=mainloop).start()
