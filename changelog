@@ -1,3 +1,9 @@
+2.4.1.0
+Renamed project to MPTB_vshell
+Updated README and documentation structure
+Added GitHub Actions workflow for CI/CD
+Added requirements.txt
+Configured environment variables for automated tests
 2.4.0.0
 Added database auto-saver
 Fixed ls command (path check and output format)
