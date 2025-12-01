@@ -15,6 +15,7 @@ async def on_message(update:Update,context):
         unknow_message(message)
 
 def direct_message(message:Message):
+    print(message.from_user.name+" sent a message")
     actions.push(message)
 
 def group_message(message:Message):

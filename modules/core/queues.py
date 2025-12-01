@@ -18,8 +18,8 @@ class Pool():
 
     def __init__(self,threads = 4):
         self.threads = threads
-        th.Thread(target = self.run).start()
         self.lock = th.Lock()
+        th.Thread(target = self.run).start()
 
     def execute(self,func,args):
         
@@ -97,7 +97,8 @@ class MessageQueue():
         if message.text.startswith("http://") or message.text.startswith("https://"):
             self.url.append(message)
             return
-
+        
+        print("pushed message")
         self.messages.append(message)
 
     def pop(self,queue_index):
@@ -124,9 +125,8 @@ class MessageQueue():
             if len(self.url) == 0:
                 return None
             return self.url.pop(0)
-
-        else:
-            return 
+        
+        return None
         
 
 actions             =  MessageQueue()  #Queues with  messages

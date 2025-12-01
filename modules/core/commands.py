@@ -82,9 +82,8 @@ def mkdir(message:Message):
     await_exec(message.reply_text, [f"directory {dirname} created"])            
     
 
-
 def size(message:Message):
-    args = message.text.removeprefix('/size')    
+    args = message.text.removeprefix('/size ')    
     user = base.get(message.from_user.id)
     if args.isnumeric():
         args = int2path(int(args),user)
@@ -93,7 +92,7 @@ def size(message:Message):
             return
     args = user.path + "/" + args
     if not os.path.exists(args):
-        await_exec(message.reply_text, ["path not found"])
+        await_exec(message.reply_text, [f"path not found {args}"])
         return
     size = os.path.getsize(args)    
     await_exec(message.reply_text,{f"the size is: {size}"})

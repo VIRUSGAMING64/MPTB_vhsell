@@ -42,14 +42,13 @@ def database_saver():
         base.save()
 
 def mainloop():
+    print("mainloop started")
     while True:
         for que in [0,1,2,3]:
-            if runner.threads_running() >= runner.threads:
-                break
             mess:Message = actions.pop(que)
             if mess == None:
                 continue
-
+            
             user:peer = base.get(mess.from_user.id)
             print(str(user))
             if user == None:

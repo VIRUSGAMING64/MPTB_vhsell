@@ -1,5 +1,6 @@
 
 import os
+from modules.brain import *
 from modules.core import *
 from modules.gvar import *
 from modules.database import *
