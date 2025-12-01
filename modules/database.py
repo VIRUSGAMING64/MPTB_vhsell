@@ -23,7 +23,7 @@ class database:
         new.is_premium  = int(data[IS_PREMIUM])
         new.path        = data[PATH]
         new.state       = int(data[STATE])
-        return new #! ADD STATE FIELD TO DATABASE
+        return new
     
     def remove(self,user:peer):
         if self.dic.get(user.id) == None:
@@ -31,14 +31,12 @@ class database:
         del self.dic[user.id]        
 
     def load_str(self,data:str):
-        user = self.str_user(data)
-        self.add(user)
+        self.add(self.str_user(data))
 
     def save(self):
         of = open(self.name,"w")
         for id in self.dic.keys():
-            data = self.parse(self.dic[id])
-            of.write(data + "\n")
+            of.write(self.parse(self.dic[id]) + "\n")
         of.close()
 
     def get(self,id)->peer:
@@ -49,13 +47,13 @@ class database:
             file = open(db_name)
         except:
             return
-        tx = file.read(64)
+        tx = file.read(1024*1024)
         data = tx
         while tx != "":
-            tx = file.read(64)
+            tx = file.read(1024*1024)
             data += tx
         data=data.split("\n")
         for raw_user in data:
             if raw_user == "":
-                break
+                continue
             self.load_str(raw_user)

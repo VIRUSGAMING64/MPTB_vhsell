@@ -7,30 +7,34 @@ from modules.entity import *
 def only_message(message):
     if message == None:
         return
-    flag = False
     
     for com in COMMANDS:
         if message.text.startswith(com):
             commands[com](message)
-            flag = True
             return
-    if not flag:
-        gpt(message)
+    gpt(message)
         
         
-def only_up_media(message):
+def only_up_media(message:Message):
     if message == None:
-        return
+        returnn
+    await_exec(message.reply_text,["sorry not implemented"])
 
 
 def only_dl_media(message):
     if message == None:
         return
+    await_exec(message.reply_text,["sorry not implemented"])
 
 
 def only_url(message):
     if message == None:
         return
+    await_exec(message.reply_text,["sorry not implemented"])
+
+
+
+
 
 def database_saver():
     while True:
@@ -40,6 +44,8 @@ def database_saver():
 def mainloop():
     while True:
         for que in [0,1,2,3]:
+            if runner.threads_running() >= runner.threads:
+                break
             mess:Message = actions.pop(que)
             if mess == None:
                 continue

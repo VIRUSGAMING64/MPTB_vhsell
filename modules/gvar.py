@@ -1,10 +1,8 @@
 from telegram import *
 from telegram.ext import *
 import os
-import asyncio
 import openai
 import httpx
-from modules.core.enums import ADMIN
 from modules.database import database
  #Seconds
 TOKEN               = os.getenv("TOKEN")
@@ -22,6 +20,7 @@ if MANAGER_ID != None:
     if MANAGER_ID.isnumeric():
         ADMINS_ID.append(int(MANAGER_ID))
 model = None
+
 if OPEN_AI_API_KEY != None:
     model = openai.OpenAI(api_key=OPEN_AI_API_KEY,http_client=httpx.Client(proxy=PROXY))
 
@@ -29,5 +28,5 @@ bot = None
 sender = None
 base = database()
 if TOKEN != None:
-    bot = Application.builder().token(TOKEN).build()
+    bot = Application.builder().token(TOKEN).proxy(PROXY).build()
     sender = bot.bot

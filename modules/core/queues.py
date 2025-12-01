@@ -2,6 +2,7 @@ from modules.utils import *
 from telegram import *
 import os
 import threading as th 
+import multiprocessing as mp
 import time
 
 TIMEOUT             = 0.01
@@ -18,25 +19,36 @@ class Pool():
     def __init__(self,threads = 4):
         self.threads = threads
         th.Thread(target = self.run).start()
+        self.lock = th.Lock()
 
     def execute(self,func,args):
-        self.running += 1
+        
         try:
+            
+            self.lock.acquire()
+            self.running += 1
+            self.lock.release()
+
             if args == None:
                 func()
-            func(*args)
-        except Exception as e:
-            raise f"Thread pool exception [{e}]"
-        finally:
+            func(*args)   
+            
+            self.lock.acquire()
             self.running -= 1
+            self.lock.release()
+
+        except Exception as e:
+            raise f"Thread pool exception [{e}]" 
 
     def _run(self):
         while True:
-            if self.running < self.threads and len(self.queue) > 0:
-                lock = th.Lock()
-                with lock:
-                    func,args = self.queue.pop(0)
-                    th.Thread(target = self.execute,args = [func,args]).start()
+            if self.threads_running() < self.threads and len(self.queue) > 0:
+                
+                self.lock.acquire()     
+                func,args = self.queue.pop(0)
+                self.lock.release()
+                th.Thread(target = self.execute,args = [func,args]).start()
+           
             else:
                 time.sleep(TIMEOUT)
             if self.stop == 1:
@@ -52,8 +64,17 @@ class Pool():
         self.stop = 1  
 
     def add(self,func,args:list):
+        self.lock.acquire()  
         self.queue.append([func,args])
-    
+        self.lock.release()
+
+    def threads_running(self):
+        self.lock.acquire()
+        t = self.running
+        self.lock.release()
+        return t
+
+
 class MessageQueue():
     messages:list[Message]           = []
     download_media:list[Message]     = []
@@ -77,11 +98,6 @@ class MessageQueue():
             self.url.append(message)
             return
 
-        if message.text.startswith("/upload "):
-            message.text = message.text.removeprefix("/upload ")
-            self.upload_media.append(message)
-            return        
-        
         self.messages.append(message)
 
     def pop(self,queue_index):

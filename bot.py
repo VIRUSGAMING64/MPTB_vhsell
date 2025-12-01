@@ -1,4 +1,5 @@
 from modules import *
+
 def __init__(bot:Application):
     while not bot.running:
         time.sleep(TIMEOUT)
@@ -12,9 +13,6 @@ def __init__(bot:Application):
         admin_user.state = ADMIN | LLM
         print(str(admin_user))
 
-    import modules.brain
-
 th.Thread(target=__init__,args=[bot]).start()
-bot.bot.get_chat
 bot.add_handler(MessageHandler(filters.ALL,on_message))
 bot.run_polling(allowed_updates=Update.ALL_TYPES)

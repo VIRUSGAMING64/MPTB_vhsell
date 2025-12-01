@@ -1,3 +1,12 @@
+2.5.0.0
+Implemented messages of not implemented in brain
+More buffer size in database
+Added proxy to the bot
+removed unused files: net.py env.py
+Created other file to commands
+Added Lock to class Pool
+Added pool tests
+Implemented size and queue commands
 2.4.2.0
 Added automatic admin registration on startup
 Updated database to persist user state
