@@ -26,6 +26,8 @@ def database_saver():
 def __pyrodl__():
     while True:
         try:
+            if dlbot.is_connected:
+                break
             dlbot.start()
             break
         except Exception as e:

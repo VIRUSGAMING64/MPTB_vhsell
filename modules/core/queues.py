@@ -1,8 +1,7 @@
+from modules.gvar import BOT_HANDLER
 from modules.utils import *
 from telegram import *
-import os
 import threading as th 
-import multiprocessing as mp
 import time
 
 TIMEOUT             = 0.4
@@ -90,14 +89,16 @@ class MessageQueue():
         if media_type != 0:
             self.download_media.append(message)
             return
-
-        if message.text == None:
+        
+        command = message.text 
+        
+        if command == None:
             return
-
-        if message.text.startswith("http://") or message.text.startswith("https://"):
+        if command.startswith(BOT_HANDLER+" "):
+            command = command.removeprefix(BOT_HANDLER+" ")
+        if command.startswith("http://") or command.startswith("https://"):
             self.url.append(message)
             return
-        
         print("pushed message")
         self.messages.append(message)
 

@@ -8,10 +8,13 @@ from modules.utils import _parse
 def only_message(message:Message):
     if message == None:
         return
+    command = message.text
+    if command.startswith(BOT_HANDLER + " "):
+        command = command.removeprefix(BOT_HANDLER + " ")
     print(f"processing message [{message.id}]")
     for com in COMMANDS:
         if message.text.startswith(com):
-            commands[com](message)
+            commands[com](message,command)
             return
     gpt(message)
         

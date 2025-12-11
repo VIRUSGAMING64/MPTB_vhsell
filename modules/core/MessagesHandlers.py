@@ -17,16 +17,33 @@ async def on_message(update:Update,context):
 
 async def on_inline_query(update:Update,context):
     query = update.inline_query
-    query.answer([InlineQueryResult(
-        "Not implemented"
-    )])
+    print(query)
+    await_exec(
+        query.answer,
+        [[
+            InlineQueryResultArticle(
+                id=str(time.time_ns()),
+                title="Not implemented",
+                input_message_content=InputTextMessageContent(
+                    "Inline mode is not implemented yet."
+                )
+            )
+        ]]
+    )
 
 def direct_message(message:Message):
     print(message.from_user.name+" sent a message")
     actions.push(message)
 
 def group_message(message:Message):
-    pass
+    print(message.text,BOT_HANDLER)
+    if message.text.startswith(BOT_HANDLER + " "):
+        print("group message for bot detected")
+        actions.push(message)
+    elif message.reply_to_message != None:
+        print("group message for bot detected")
+        if message.reply_to_message.from_user.id == int(BOT_ID):
+            actions.push(message)
 
 def channel_message(message:Message):
     pass

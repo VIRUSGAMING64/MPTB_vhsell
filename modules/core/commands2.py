@@ -8,9 +8,9 @@ import threading as th
 from modules.fuse import *
 
 
-def comp(message:Message):
-    args = message.text
+def comp(message:Message, command):
+    args = command
 
 
-def ren(message:Message):
-    args = message.text
+def ren(message:Message, command):
+    args = command

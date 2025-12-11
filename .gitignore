@@ -5,4 +5,5 @@ env
 **/__pycache__
 database.csv
 *.session*
-clean.sh
+*clean.sh
+.cph-ng

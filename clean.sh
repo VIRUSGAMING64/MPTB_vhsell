@@ -11,3 +11,4 @@ rm -r saved
 rm -r logs.txt
 rm -r env
 rm -r downloader.session*
+rm -r .cph-ng

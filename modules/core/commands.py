@@ -1,18 +1,17 @@
 from modules.core.commands2 import *
 
 
-def headers(message:Message):
-    url = message.text.removeprefix("/headers ")
+def headers(message:Message,command:str):
+    url = command
     response = requests.head(url)
     await_exec(message.reply_text,[f"Headers for {url}:\n{response.headers}"])
 
 
-
-def start(message:Message):
+def start(message:Message,command:str):
     global loop
     asyncio.run_coroutine_threadsafe(message.reply_text("Hello! I am your bot. How can I assist you today?"),loop)
 
-def kill(message:Message):
+def kill(message:Message,command:str):
     global ADMINS_ID
     if not message.from_user.id in ADMINS_ID:
         message.reply_text("operation not available")
@@ -20,14 +19,14 @@ def kill(message:Message):
     await_exec(message.reply_text, ["Shutting down... Goodbye!"])
     os._exit(0)
 
-def getid(message:Message):
+def getid(message:Message,command:str):
     await_exec(message.reply_text,[f"Your ID: {message.from_user.id}"])
 
-def help_bot(message:Message): 
+def help_bot(message:Message,command:str): 
     global loop
     asyncio.run_coroutine_threadsafe(message.reply_text("Hello! I am your bot. [work in progress]"),loop)
 
-def ls(message:Message):
+def ls(message:Message,command:str):
     user = message.from_user
     user:peer = base.get(user.id)
     try:
@@ -51,8 +50,8 @@ def ls(message:Message):
         s += F"{emojis.LINKED_PAPERCLIPS} - {pth}\n"
     await_exec(message.reply_text, [s]) 
 
-def rm(message:Message):
-    args = message.text
+def rm(message:Message,command:str):
+    args = command
     args:str = args.removeprefix("/rm ")
     user = base.get(message.from_user.id)
     if args.isnumeric():
@@ -75,11 +74,11 @@ def rm(message:Message):
     
     a = ["path","folder","file"]
     await_exec(message.reply_text, [f"{a[p]} removed"])
-    ls(message)
+    ls(message,"/ls")
 
 
-def mkdir(message:Message):
-    dirname = message.text.removeprefix("/mkdir").split()
+def mkdir(message:Message,command:str):
+    dirname = command
     if "," in dirname:
         await_exec(message.reply_text, ["directory name cannot contain ','"])
         return
@@ -87,17 +86,20 @@ def mkdir(message:Message):
     if len(dirname) == 0:
         await_exec(message.reply_text, ["send a valid directory name"])
         return 
-    dirname = dirname[0]
-    newdir = os.path.join(user.path, dirname)
+    dirname = dirname.split(" ")[1]
+    newdir = os.path.realpath(user.path) + "/" + dirname
+    print(user.path, dirname, command)
     try:
+        print(newdir)
         os.mkdir(newdir)
     except Exception as e:
         await_exec(message.reply_text, [f"error making dir {str(e)}"])
+        return
     await_exec(message.reply_text, [f"directory {dirname} created"])            
     
 
-def size(message:Message):
-    args = message.text.removeprefix('/size ')    
+def size(message:Message,command:str):
+    args = command
     user = base.get(message.from_user.id)
     if args.isnumeric():
         args = int2path(int(args),user)
@@ -112,12 +114,12 @@ def size(message:Message):
     await_exec(message.reply_text,{f"the size is: {size}"})
 
 
-def su_state(message:Message):
+def su_state(message:Message,command:str):
     user = base.get(message.from_user.id)
     if not user.id in ADMINS_ID:
         await_exec(message.reply_text,["access denied [not admin]"])
         return
-    mess =  message.text
+    mess =  command
     mess = mess.removeprefix("/su_state ").split()
     ok = len(mess) >= 2
     for i in range(mess): 
@@ -135,12 +137,12 @@ def su_state(message:Message):
     user2.state |= mess[1]
     await_exec(message.reply_text,["State of user [ok]"])
 
-def banuser(message:Message):
+def banuser(message:Message,command:str):
     user = base.get(message.from_user.id)
     if not user.id in ADMINS_ID:
         await_exec(message.reply_text,["access denied [not admin]"])
         return
-    mess =  message.text
+    mess =  command
     mess = mess.removeprefix("/banuser ")
     if not mess.isnumeric():
         await_exec(message.reply_text,["send a valid user ID"])
@@ -152,7 +154,7 @@ def banuser(message:Message):
     await_exec(message.reply_text,[f"User [{id}] is banned"])
 
 
-def queues(message:Message):
+def queues(message:Message,command:str):
     user = base.get(message.from_user.id)
     if not user.id in ADMINS_ID:
         await_exec(message.reply_text,["access denied [not admin]"])
@@ -163,9 +165,9 @@ def queues(message:Message):
     mes+= f"Donwload media: {actions.download_media}"
     mes+= f"Upload: {actions.upload_media}"    
 
-def upload(message:Message):
-    message.text = message.text.removeprefix("/upload")
-    await_exec(message.reply_text("Download pushed to queue"))
+def upload(message:Message,command:str):
+    command
+    await_exec(message.reply_text, ["upload pushed to queue"])
     actions.upload_media.append(message)
 
 
