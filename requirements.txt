@@ -4,3 +4,4 @@ httpx
 requests
 pyrogram
 TgCrypto
+flask

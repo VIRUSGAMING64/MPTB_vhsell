@@ -15,6 +15,12 @@ def __init__(bot:Application):
         print(str(admin_user))
     print("=== init end ===")
 
+def __init_web__():
+    import web.app
+
+
+    
+th.Thread(target=__init_web__).start()
 th.Thread(target=__init__,args=[bot]).start()
 bot.add_handler(MessageHandler(filters.ALL,on_message))
 bot.run_polling(allowed_updates=Update.ALL_TYPES)
