@@ -187,7 +187,8 @@ commands            = {
     "/banuser": banuser,
     "/queues": queues,
     "/upload": upload,
-    "/headers": headers
+    "/headers": headers,
+    "/x265": x265
 }
 
 COMMANDS = commands.keys()

@@ -131,6 +131,6 @@ class MessageQueue():
         
 
 actions             =  MessageQueue()  #Queues with  messages
-runner              = Pool(128)
+runner              =  Pool(os.cpu_count())
 
 runner.run()

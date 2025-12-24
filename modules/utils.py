@@ -1,4 +1,5 @@
 import datetime
+import pstats
 import pyrogram.emoji as emojis
 from telegram import *
 from modules.core.enums import *
@@ -6,6 +7,7 @@ import asyncio
 import threading as th
 from modules.entity import *
 import time
+import psutil
 
 loop = asyncio.new_event_loop()
 def loop_runner():
@@ -15,7 +17,6 @@ def loop_runner():
 
 
 th.Thread(target=loop_runner, daemon=True).start()
-
 
 def progress(count, total, speed = None, message:Message = None, label = "Downloading"):
     progtext = f"{label}\n"

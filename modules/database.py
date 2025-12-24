@@ -1,9 +1,8 @@
 from modules.entity import *
 from modules.core.enums import *
 class database:
-
     dic = { }
-
+    
     def __init__(self,db_name="database.csv"):
         self.name = db_name
         self.load(db_name)
@@ -45,15 +44,18 @@ class database:
     def load(self,db_name):
         try:
             file = open(db_name)
-        except:
-            return
-        tx = file.read(1024*1024)
-        data = tx
-        while tx != "":
             tx = file.read(1024*1024)
-            data += tx
-        data=data.split("\n")
-        for raw_user in data:
-            if raw_user == "":
-                continue
-            self.load_str(raw_user)
+            data = tx
+    
+            while tx != "":
+                tx = file.read(1024*1024)
+                data += tx
+    
+            data=data.split("\n")
+            for raw_user in data:
+                if raw_user == "":
+                    continue
+                self.load_str(raw_user)
+    
+        except Exception as e:
+            return

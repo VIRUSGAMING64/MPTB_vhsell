@@ -17,8 +17,7 @@ def only_message(message:Message):
         if message.text.startswith(com):
             commands[com](message,command)
             return
-    gpt(message)
-        
+    gpt(message)        
 
 
 def only_up_media(message:Message):
@@ -42,16 +41,16 @@ def only_dl_media(message:Message):
     print(id)
 
 
-
 def only_url(message):
     if message == None: return
     if message.text == None: return
     url = message.text
-    mes = await_exec(message.reply_text,[f"Starting download from url: {url}"])
+    mess = await_exec(message.reply_text,[f"Starting download from url: {url}"])
     user = base.get(message.from_user.id)
-    down = downloader()
+    down = downloader(progress, [0,mess,"downloading... "])
     name = down.getname(url)
     down.download(url, user.path)
+
 
 def mainloop():
     print("mainloop started")
